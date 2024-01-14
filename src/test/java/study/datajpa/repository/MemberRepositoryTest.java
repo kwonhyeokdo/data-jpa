@@ -12,6 +12,7 @@ import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional(readOnly = true)
@@ -139,5 +140,23 @@ public class MemberRepositoryTest {
         List<Member> result = memberRepository.findByNames(List.of("AAA", "BBB"));
 
         result.forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void returnType(){
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> resultList = memberRepository.findListByUsername("AAA");
+        Member resultMember = memberRepository.findMemberByUsername("AAA");
+        Optional<Member> resultOptional = memberRepository.findOptionalByUsername("AAA");
+
+        System.out.println(resultList);
+        System.out.println(resultMember);
+        System.out.println(resultOptional);
     }
 }
